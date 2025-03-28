@@ -2,9 +2,11 @@
 ### Discord.py bot that tracks system resources
 ## Installation
 1. Clone the repository
-```git clone https://github.com/Marcotrix/markmon```
+```
+git clone https://github.com/Marcotrix/markmon
+```
 
-2. Create a .env file
+3. Create a .env file
 ```
 TOKEN=YOUR_TOKEN_HERE
 ```
