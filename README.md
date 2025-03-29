@@ -1,5 +1,6 @@
 # MARK MONitor
 ### Discord.py bot that tracks system resources
+### This is only intended for linux.
 ## Installation
 1. Clone the repository
 ```
