@@ -10,6 +10,23 @@ from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
 
+# Get CPU info
+def get_cpu_info():
+    cpu_info = {}
+    with open("/proc/cpuinfo", "r") as f:
+        for line in f:
+            if "model name" in line:
+                cpu_info["name"] = line.split(":")[1].strip()
+            elif "cpu MHz" in line:
+                cpu_info["clock_speed"] = line.split(":")[1].strip() + " MHz"
+            elif "vendor_id" in line:
+                cpu_info["brand"] = line.split(":")[1].strip()
+    return cpu_info
+#THIS STUPID SHIT HAS TO BE HERE OR ELSE THE
+#INDENTATION BREAKS IT, TRYING TO FIX THAT
+#BREAKS ANOTHER FUNCTION, DO NOT TOUCH THIS
+cpu_info = get_cpu_info()
+
 # Calculate uptime and last reboot time
 def get_uptime():
     elapsed = int(time.time() - psutil.boot_time())
@@ -25,6 +42,7 @@ def get_system_stats():
     ram = psutil.virtual_memory()
     hdd = psutil.disk_usage('/')
     cpu_usage = psutil.cpu_percent(interval=0.4, percpu=False)
+
 
     return {
         "uptime": get_uptime(),
@@ -55,7 +73,7 @@ async def on_message(message):
 
         embed = discord.Embed(title="MarkMon - System Stats")
         embed.add_field(name="System", value=f"Uptime: {stats['uptime']}\nLast Reboot: {stats['last_reboot']}\nHostname: {stats['hostname']}", inline=False)
-        embed.add_field(name="CPU", value=f"Usage: {stats['cpu_usage']}", inline=False)
+        embed.add_field(name="CPU", value=f"Usage: {stats['cpu_usage']}\n Model: {cpu_info.get('name')}\n Clock speed: {cpu_info.get('clock_speed')}", inline=False)
         embed.add_field(name="RAM", value=f"Usage: {stats['ram_usage']}", inline=False)
         embed.add_field(name="Storage", value=f"Used: {stats['hdd_usage']}\nTotal: {stats['hdd_total']}", inline=False)
 
